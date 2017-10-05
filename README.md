@@ -79,3 +79,13 @@ From the point onward, the local connection will be started (or at least checked
 ```
 mvn test
 ```
+* Depending on whether your assertions pass or fail, our example automatically sets the score using [CBT's API](https://crossbrowsertesting.com/apidocs/v3/). Throughout your test, you can even take snapshots of your page using the following command:
+
+```
+Driver.takeSnapshot(webDriver.getSessionId().toString());
+```
+
+
+### Get in Touch!
+
+If you have any trouble getting started, don't hestitate to [reach out to us](mailto:support@crossbrowsertesting.com). We're always happy to assist.  

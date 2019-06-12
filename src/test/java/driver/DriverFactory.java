@@ -15,10 +15,10 @@ import org.apache.commons.codec.binary.Base64;
 public class DriverFactory {
     public static RemoteWebDriver getDriver() {
         boolean startTunnel = System.getenv("START_TUNNEL").toString().equals("true");
-        
+
         if (startTunnel) {
             try {
-                secureTunnel();    
+                secureTunnel();
             } catch (Exception ex) {
                 System.out.println(ex.getMessage());
             }
@@ -38,7 +38,8 @@ public class DriverFactory {
         caps.setCapability("platform", System.getenv("PLATFORM"));
         caps.setCapability("screenResolution", System.getenv("SCREEN_RESOLUTION"));
         caps.setCapability("record_video", "true");
-        
+        caps.setCapability("record_network", "false");
+
         RemoteWebDriver driver = new RemoteWebDriver(hubUrl, caps);
         return driver;
     }
@@ -48,8 +49,8 @@ public class DriverFactory {
             System.out.println("Currently a tunnel active, carrying on..");
         } else {
             System.out.println("Tunnel not active, starting tunnel");
-            String runString = System.getProperty("user.dir") + "/SecureTunnel/cbt-tunnels --username " 
-                             + System.getenv("USERNAME") + " --authkey " + System.getenv("AUTHKEY") 
+            String runString = System.getProperty("user.dir") + "/SecureTunnel/cbt-tunnels --username "
+                             + System.getenv("USERNAME") + " --authkey " + System.getenv("AUTHKEY")
                              + " --verbose > log.text";
             Process p = Runtime.getRuntime().exec(runString);
             while (!isTunnelActive()) {
@@ -82,7 +83,7 @@ public class DriverFactory {
         conn.setRequestMethod("GET");
         String userpassEncoding = Base64.encodeBase64String((System.getenv("USERNAME") + ":" + System.getenv("AUTHKEY")).getBytes());
         conn.setRequestProperty("Authorization", "Basic " + userpassEncoding);
-    
+
         if (conn.getResponseCode() != 200) {
             throw new IOException("EXCEPTION " + conn.getResponseMessage());
         }
